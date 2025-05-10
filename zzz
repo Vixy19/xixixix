@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🎁 Haloooo 🎁</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to top right, #fcd5ce, #fae1dd);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      text-align: center;
+      overflow: hidden;
+    }
+    h1 {
+      color: #ff69b4;
+      font-size: 3em;
+      margin-top: 50px;
+    }
+    .btn {
+      margin-top: 30px;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      background: #ff85c1;
+      color: white;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #ff5baf;
+    }
+
+    #message {
+      opacity: 0;
+      transition: opacity 2s ease;
+      font-size: 1.5em;
+      color: #333;
+      margin: 40px auto;
+      max-width: 600px;
+    }
+
+    #wortel {
+      width: 120px;
+      display: none;
+      margin-top: 20px;
+      border-radius: 50%;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎂 Happy Birthday Youuu 🎂</h1>
+  <button class="btn" onclick="showMessage()">🎁 Buka Kado 🎁</button>
+
+  <p id="message">...</p>
+  <img src="https://i.imgur.com/CvCrk1c.png" id="wortel" alt="Kucing Wortel" />
+
+  <canvas id="confetti"></canvas>
+
+  <script>
+    function showMessage() {
+      document.getElementById('message').textContent = `
+        Hari ini bukan hari biasa... soalnya orang yang luar biasa lahir hari ini 🎉💖
+        Semoga hidupmu selalu diberkahi, sehat terus, dan makin bersinar kayak bintang ✨
+        Dari Fifi (dan Wortel 🐱), with so much love 💌
+      `;
+      document.getElementById('message').style.opacity = 1;
+      document.getElementById('wortel').style.display = "block";
+      startConfetti();
+    }
+    // Simple Confetti
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const confetti = Array.from({ length: 200 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 6 + 4,
+      d: Math.random() * 10 + 5,
+      color: `hsl(${Math.random() * 360}, 100%, 70%)`,
+      tilt: Math.random() * 10 - 5,
+      tiltAngle: 0,
+      tiltAngleIncrement: Math.random() * 0.07 + 0.05
+    }));
+    function drawConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      confetti.forEach(c => {
+        ctx.beginPath();
+        ctx.lineWidth = c.r / 2;
+        ctx.strokeStyle = c.color;
+        ctx.moveTo(c.x + c.tilt + c.r / 4, c.y);
+        ctx.lineTo(c.x + c.tilt, c.y + c.tilt + c.d / 4);
+        ctx.stroke();
+      });
+      updateConfetti();
+    }
+
+    function updateConfetti() {
+      confetti.forEach(c => {
+        c.y += Math.cos(c.d) + 1 + c.r / 2;
+        c.x += Math.sin(c.d);
+        c.tiltAngle += c.tiltAngleIncrement;
+        c.tilt = Math.sin(c.tiltAngle - c.d / 3) * 15;
+
+        if (c.y > canvas.height) {
+          c.y = -10;
+          c.x = Math.random() * canvas.width;
+        }
+      });
+    }
+
+    function startConfetti() {
+      setInterval(drawConfetti, 25);
+    }
+  </script>
+
+</body>
+</html>
